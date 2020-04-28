@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class Dice : MonoBehaviour
 {
+    [HideInInspector] public GameManager gameManager;
+    [SerializeField] Vector3 rotation = new Vector3(100, 100, 100);
+
     Rigidbody rb;
-    Vector3 rotation = new Vector3(-90, -90, -90);
+    Vector3 startRot;
     Vector3 startPos;
     bool isReady = true;
     bool inGame = false;
 
-
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
         rb = GetComponent<Rigidbody>();
         startPos = transform.position;
+       
         ResetDice();
-        
     }
 
     // Update is called once per frame
@@ -25,25 +28,15 @@ public class Dice : MonoBehaviour
     {
         if (isReady && !inGame)
         {
-            transform.Rotate(rotation * Time.deltaTime);
+           transform.Rotate(rotation * Time.deltaTime);
         }
        
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            RollDice();
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            ResetDice();
-        }
-
         if (rb.IsSleeping() && !isReady)
         {
             isReady = true;
         }
     }
+
 
     public void RollDice()
     {
@@ -52,7 +45,8 @@ public class Dice : MonoBehaviour
             isReady = false;
             inGame = true;
             rb.useGravity = true;
-            rb.AddTorque(Random.Range(0, 500), Random.Range(0, 500), Random.Range(0, 500));
+            rb.isKinematic = false;
+            rb.AddTorque(Random.Range(0, -500), Random.Range(0, -500), Random.Range(0, -500));
         }
     }
 
@@ -61,6 +55,9 @@ public class Dice : MonoBehaviour
         isReady = true;
         inGame = false;
         rb.useGravity = false;
+        rb.isKinematic = true;
         transform.position = startPos;
+        startRot = new Vector3(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360));
+        transform.rotation = Quaternion.Euler(startRot);
     }
 }

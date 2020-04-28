@@ -4,13 +4,34 @@ using UnityEngine;
 
 public class SideNumber : MonoBehaviour
 {
-    public int side;
+    [SerializeField] int side;
+    Rigidbody rb;
+    Dice dice;
+    bool resultSent;
 
+    void Start()
+    {
+        resultSent = false;
+        dice = GetComponentInParent<Dice>();
+        rb = dice.GetComponent<Rigidbody>();
+    }
+
+    //get the dice side number 
     private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Table" && rb.IsSleeping() && !resultSent)
+        {
+            dice.gameManager.SetDiceResult(side);
+            resultSent = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Table")
         {
-            Debug.Log("SIDE " + side);
+            resultSent = false;
         }
+        
     }
 }
