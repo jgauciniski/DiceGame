@@ -3,36 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class InfoTurnPopup : MonoBehaviour
+public class InfoTurnPopup : Popup
 {
     [SerializeField] TextMeshProUGUI playerName;
-    [SerializeField] float timeOnScreen = 1f;
-    GameManager gm;
-    Animator anim;
-
-    private void Awake()
-    {
-        gm = FindObjectOfType<GameManager>();
-        anim = GetComponent<Animator>();
-    }
+    [SerializeField] TextMeshProUGUI playerNameReroll;
+    [SerializeField] TextMeshProUGUI playerRerollCount;
+    [SerializeField] GameObject turnGroup;
+    [SerializeField] GameObject rerollGroup;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerName.text = gm.GetPlayer(gm.IsPlayerTurn).Name.ToUpper() + "'S";
-      
+        playerName.text = gameManager.GetPlayer(gameManager.IsPlayerTurn).Name;
+        playerNameReroll.text = playerName.text;
+        playerRerollCount.text = gameManager.GetPlayer(gameManager.IsPlayerTurn).Rerolls.ToString();
+        turnGroup.SetActive(!gameManager.IsReroll);
+        rerollGroup.SetActive(gameManager.IsReroll);
+
         Invoke("ClosePopup", timeOnScreen);
     }
-
-    public void DestroyPopup()
-    {
-        Destroy(transform.parent.gameObject);
-    }
-
-    // Update is called once per frame
-    void ClosePopup()
-    {
-        anim.SetTrigger("Close");
-    }
-
 }

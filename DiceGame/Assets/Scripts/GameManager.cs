@@ -3,12 +3,14 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject rollButton;
+    [SerializeField] Button exitButton;
     [SerializeField] UIManager UIManager;
-    [SerializeField][Tooltip("Waiting time before reset in case of invalid play")] float invalidPlayTimer = 8f;
+    [SerializeField][Tooltip("Waiting time before reset in case of invalid play")] float invalidPlayTimer = 5f;
     [SerializeField] int numberOfRounds = 11;
     [SerializeField] Dice[] dice; //0 - white, 1 - red
     [SerializeField] Player[] player; //0 - Player, 1 - Bot
@@ -26,6 +28,7 @@ public class GameManager : MonoBehaviour
     int round;
     float invalidTimer = 0;
     bool isTieEven;
+    bool isGameOver = false;
 
     public bool IsPlayerTurn { get; set; }
 
@@ -36,26 +39,27 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        CheckForInvalidPlay();
-
-        if (round > numberOfRounds)
+        if (round > numberOfRounds && !isGameOver)
         {
             GameOver();
+            isGameOver = true;
         }
+
+        CheckForInvalidPlay();
     }
 
     public void StartGame()
     {
-        nextRollManual = false;
-        EnableRollButton(false);
         ResetGame();
+        //First Popup
+        UIManager.InstantiatePopup(UIManager.firstPopup, this);
         InitializeManualRollList();
     }
 
     void InitializeManualRollList()
     {
         //set the manual roll list to the dice count
-        foreach (var d in dice) { diceResultManual.Add(0); }
+        for (int i=0; i < dice.Length; i++) { diceResultManual.Add(0); }
     }
 
     public void EnableRollButton(bool isEnable)
@@ -66,14 +70,15 @@ public class GameManager : MonoBehaviour
 
     void ResetGame()
     {
+        isGameOver = false;
         round = 1;
         nextRollManual = false;
+        EnableRollButton(false);
         ResetPlayers();
         SetRollTurn(true); //set turn to the player
         IsReroll = false;
         invalidTimer = 0;
-        UIManager.ResetUI(player[0].GameScore, player[1].GameScore, round); 
-        UIManager.InstantiatePopup(UIManager.firstPopup);
+        UIManager.ResetUI(player[0].GameScore, player[1].GameScore, round);
     }
 
     void ResetPlayers()
@@ -114,12 +119,14 @@ public class GameManager : MonoBehaviour
             invalidTimer += Time.deltaTime;
             if (invalidTimer > invalidPlayTimer)
             {
-                Debug.LogError("Invalid play! Reseting the round.");
-                Debug.LogError("TIMER INVALID " + invalidTimer);
+                //Invalid play popup
+                UIManager.InstantiatePopup(UIManager.invalidPopup, this);
                 invalidTimer = 0;
+                //Invalid play - reseting the round
                 ResetRoll(index);
             }
         }
+        else { invalidTimer = 0; }
     }
 
     void ResetRoll(int index)
@@ -171,7 +178,11 @@ public class GameManager : MonoBehaviour
 
     void SetRollResult(int index)
     {
-        if (nextRollManual) { ApplyManualScore(); }
+        if (nextRollManual)
+        {
+            ApplyManualScore();
+            //todo instantiate confirmation
+        }
 
         //check for doubles 
         if (player[index].DiceResult.Any(x => x != player[index].DiceResult[0]))
@@ -185,7 +196,7 @@ public class GameManager : MonoBehaviour
         else
         {
             //if player rolled double-odds, cant reroll
-            if (player[0].RoundScore % 2 == 0) { player[0].CanReroll = false; }
+            if (player[0].DiceResult[0] % 2 != 0) { player[0].CanReroll = false; }
             //if bot rolled double-evens, cant reroll
             else { player[1].CanReroll = false; }
 
@@ -200,7 +211,7 @@ public class GameManager : MonoBehaviour
             IsReroll = false;
            
             //Reroll popup
-            UIManager.InstantiatePopup(UIManager.rerollPopup);
+            UIManager.InstantiatePopup(UIManager.endRoundPopup, this);
         }
 
         Debug.Log("Round score for " + player[index].Name + " " + player[index].RoundScore);
@@ -254,7 +265,7 @@ public class GameManager : MonoBehaviour
         }
 
         //Turn Info Popup
-        UIManager.InstantiatePopup(UIManager.infoTurnPopup);
+        UIManager.InstantiatePopup(UIManager.infoTurnPopup, this);
     }
 
     bool IsReadyForNextRound()
@@ -268,6 +279,8 @@ public class GameManager : MonoBehaviour
 
     public void NextRound() //called by the UI (RerollPopup)
     {
+        if (isGameOver) { return; }
+
         CheckIfCanReroll();
         CheckForBotReroll();
 
@@ -288,7 +301,7 @@ public class GameManager : MonoBehaviour
         //Check if Bot wants to reroll
         if (player[1].CanReroll)
         {
-            var isBotRerolled = player[1].RerollRoundBot(min, max, player[0].RoundScore);
+            var isBotRerolled = player[1].RerollRound(min, max, player[0].RoundScore);
 
             if (isBotRerolled && player[1].Rerolls > 0)
             {
@@ -350,8 +363,25 @@ public class GameManager : MonoBehaviour
 
     void GameOver()
     {
-        //Todo- show the result
-        print("Game Over");
+        EnableRollButton(false);
+
+        round = numberOfRounds;
+        //update UI
+        UIManager.SetUI(player[0].GameScore, player[1].GameScore, round);
+
+        ResetDice();
+        UIManager.InstantiatePopup(UIManager.gameOverPopup, this);
+    }
+
+    public void ExitGameplay()
+    {
+        EnableExitButton(false);
+        UIManager.ShowExitConfirmation(this);
+    }
+
+    public void EnableExitButton(bool isEnabled)
+    {
+        exitButton.interactable = isEnabled;
     }
 
     private void OnApplicationQuit()
@@ -362,8 +392,20 @@ public class GameManager : MonoBehaviour
     //Apply score entered in the inspector (for the current player in game)
     void ApplyManualScore()
     {
-        if (IsPlayerTurn) { player[0].DiceResult = diceResultManual; }
-        else { player[1].DiceResult = diceResultManual; }
+        if (IsPlayerTurn)
+        {
+            for (int i=0; i < player[0].DiceResult.Count; i++)
+            {
+                player[0].DiceResult[i] = diceResultManual[i];
+            }
+        }
+        else
+        {
+            for (int i = 0; i < player[1].DiceResult.Count; i++)
+            {
+                player[1].DiceResult[i] = diceResultManual[i];
+            }
+        }
     }
 }
 

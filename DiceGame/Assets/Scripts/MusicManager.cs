@@ -13,6 +13,8 @@ public class MusicManager : MonoBehaviour {
 
     void Awake()
     {
+
+        audio = GetComponent<AudioSource>();
         if (_instance != null)
         {
             Destroy(gameObject);
@@ -27,7 +29,7 @@ public class MusicManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        audio = GetComponent<AudioSource>();
+        
     }
 	
     void OnEnable()

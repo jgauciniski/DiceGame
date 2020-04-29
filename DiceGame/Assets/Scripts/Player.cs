@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Player", menuName = "Player")]
-public class Player : ScriptableObject
+public class Player : MonoBehaviour
 {
-    [SerializeField] new string name;
-    [SerializeField] bool isBot;
-    [SerializeField] int rerolls = 3;
-    [SerializeField] List<int> diceResult;
-    [SerializeField] Material diceMaterial;
+    [SerializeField] protected new string name;
+    [SerializeField] protected int rerolls = 3;
+    [SerializeField] protected List<int> diceResult;
+    [SerializeField] protected Material diceMaterial;
 
     public bool IsReady { get; set; }
     public bool CanReroll { get; set; }
@@ -20,12 +18,6 @@ public class Player : ScriptableObject
     {
         get { return name; }
         set { name = value; }
-    }
-
-    public bool IsBot
-    {
-        get { return isBot; }
-        private set { isBot = value; }
     }
 
     public int Rerolls
@@ -56,31 +48,8 @@ public class Player : ScriptableObject
         DiceResult.Clear();
     }
 
-    public bool RerollRoundBot(int min, int max, int opponentRoundScore)
+    public virtual bool RerollRound(int min, int max, int opponentRoundScore)
     {
-        bool reroll = false;
-
-        if (min >= max)
-        {
-            Debug.LogError("Min value can not be greater or equal than max value! ");
-            return false;
-        }
-        //Never reroll if the round score is greater than the player
-        if (RoundScore > opponentRoundScore) { reroll = false; }
-
-        //Reroll if the player has a score less than the min (debug set in the game manager - inspector)
-        else if (opponentRoundScore <= min) { reroll = true; }
-        //Random 50% chance of reroll if the player has a score in between min and max (debug set in the game manager - inspector)
-        else if (opponentRoundScore > min && opponentRoundScore <= max)
-        {
-            int decision = Random.Range(0, 2);
-            
-            if (decision == 0) { reroll = true; }
-            else { reroll = false; }
-        }
-        //clear result
-        if (reroll) { diceResult.Clear(); }
-
-        return reroll;
+        return false;
     }
 }

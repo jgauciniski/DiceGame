@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class OptionsController : MonoBehaviour {
 
-    [SerializeField] private Slider volumeSlider;
+    [SerializeField] Slider volumeSlider;
     private MusicManager musicManager;
 
     // Use this for initialization
@@ -31,4 +31,12 @@ public class OptionsController : MonoBehaviour {
     {
         volumeSlider.value = 0.5f;
     }
+
+    public void EraseStats()
+    {
+        PlayerPrefsManager.SetTotalMatches(0);
+        PlayerPrefsManager.SetPlayerWins(true, 0);
+        PlayerPrefsManager.SetPlayerWins(false, 0);
+    }
+
 }

@@ -57,6 +57,7 @@ public class Dice : MonoBehaviour
         rb.useGravity = false;
         rb.isKinematic = true;
         transform.position = startPos;
+        //randomize dice rotation
         startRot = new Vector3(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360));
         transform.rotation = Quaternion.Euler(startRot);
     }
