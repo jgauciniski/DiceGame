@@ -6,7 +6,7 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] Transform popupParent;
-    [SerializeField] Transform exitPopupParent;
+    [SerializeField] Transform topPopupParent;
     [SerializeField] TextMeshProUGUI playerScoreUI;
     [SerializeField] TextMeshProUGUI botScoreUI;
     [SerializeField] TextMeshProUGUI roundUI;
@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     public GameObject invalidPopup;
     public GameObject gameOverPopup;
     public GameObject exitGameplayPopup;
+    public GameObject manualScorePopup;
 
     public void InstantiatePopup(GameObject popup, GameManager gm)
     {
@@ -25,7 +26,12 @@ public class UIManager : MonoBehaviour
 
     public void ShowExitConfirmation(GameManager gm)
     {
-        Instantiate(exitGameplayPopup, exitPopupParent).GetComponentInChildren<Popup>().Initialize(gm);
+        Instantiate(exitGameplayPopup, topPopupParent).GetComponentInChildren<Popup>().Initialize(gm);
+    }
+
+    public void ShowWarningConfirmation(GameManager gm)
+    {
+        Instantiate(manualScorePopup, topPopupParent).GetComponentInChildren<Popup>().Initialize(gm);
     }
 
     public void SetUI(int player, int bot, int round)

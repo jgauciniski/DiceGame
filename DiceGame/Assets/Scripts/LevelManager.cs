@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour {
     {
         if (autoLoadNextLevelAfter == 0)
         {
-            Debug.Log("Level auto load disabled");
+            //Debug.Log("Level auto load disabled");
         }
         else
         {
@@ -22,13 +22,13 @@ public class LevelManager : MonoBehaviour {
 
     public void LoadLevel(string name) 
     {
-        Debug.Log("Level load requested for: " + name);
+        //Debug.Log("Level load requested for: " + name);
         SceneManager.LoadScene(name);
     }
 
     public void Quit()
     {
-        Debug.Log("QUIT!!");
+        //Debug.Log("QUIT!!");
         Application.Quit();
     }
 

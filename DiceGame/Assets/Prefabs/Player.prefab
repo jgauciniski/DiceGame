@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Player
-  isBot: 0
   rerolls: 3
   diceResult: 
   diceMaterial: {fileID: 2100000, guid: 90eb9b65faccf864a8ec41e32802c85c, type: 2}
+  delayBeforeNextRoll: 1

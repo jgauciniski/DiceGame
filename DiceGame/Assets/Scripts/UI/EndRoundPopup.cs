@@ -6,28 +6,63 @@ using TMPro;
 
 public class EndRoundPopup : Popup
 {
-    [SerializeField] TextMeshProUGUI playerName;
-    [SerializeField] TextMeshProUGUI botName;
     [SerializeField] TextMeshProUGUI playerRoundScore;
     [SerializeField] TextMeshProUGUI botRoundScore;
     [SerializeField] TextMeshProUGUI rerollCounter;
+    [SerializeField] GameObject[] doublesAreZero;
+    [SerializeField] GameObject tieLabel;
+    [SerializeField] GameObject doubleOdds;
     [SerializeField] Button rerollButton;
+    [SerializeField] Button buttonOK;
 
     public override void Initialize(GameManager gm)
     {
         base.Initialize(gm);
 
-        playerName.text = gameManager.GetPlayer(true).Name;
-        botName.text = gameManager.GetPlayer(false).Name;
         playerRoundScore.text = gameManager.GetPlayer(true).RoundScore.ToString();
         botRoundScore.text = gameManager.GetPlayer(false).RoundScore.ToString();
         rerollCounter.text = gameManager.GetPlayer(true).Rerolls.ToString();
 
+        //reset doubles label
+        doublesAreZero[0].SetActive(false);
+        doublesAreZero[1].SetActive(false);
+
+        //doubles
+        if (gameManager.GetPlayer(true).RoundScore == 0)
+        {
+            doublesAreZero[0].SetActive(true);
+        }
+        if(gameManager.GetPlayer(false).RoundScore == 0)
+        {
+            doublesAreZero[1].SetActive(true);
+        }
+
+        //rest double-odds
+        doubleOdds.SetActive(false);
+
+        //if it's double-odds, player can't reroll
+        if (gameManager.GetPlayer(true).DiceResult[0] % 2 != 0)
+        {
+            doubleOdds.SetActive(true);
+            gameManager.GetPlayer(true).CanReroll = false;
+            rerollButton.interactable = false;
+        }
+
         if (!gameManager.GetPlayer(true).CanReroll) { rerollButton.interactable = false; }
+
+        //reset tie label
+        tieLabel.SetActive(false);
+
+        //Tie
+        if (gameManager.IsTie())
+        {
+            tieLabel.SetActive(true);
+        }
     }
 
     public void ButtonOK()
     {
+        buttonOK.interactable = false;
         //flag player as ready
         gameManager.GetPlayer(true).IsReady = true;
         gameManager.NextRound();
@@ -37,6 +72,8 @@ public class EndRoundPopup : Popup
 
     public void PlayerReroll()
     {
+        rerollButton.interactable = false;
+
         if (gameManager.GetPlayer(true).Rerolls > 0)
         {
             gameManager.GetPlayer(true).Rerolls--;

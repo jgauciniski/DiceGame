@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupParent: {fileID: 0}
+  topPopupParent: {fileID: 0}
   playerScoreUI: {fileID: 0}
   botScoreUI: {fileID: 0}
   roundUI: {fileID: 0}
@@ -58,4 +59,6 @@ MonoBehaviour:
   gameOverPopup: {fileID: 7697731928407313058, guid: b7d5885b30a7d1744b34d81bf5d16e2b,
     type: 3}
   exitGameplayPopup: {fileID: 7697731928407313058, guid: aaca4c3f04b9a8040a6b856f97cc7e19,
+    type: 3}
+  manualScorePopup: {fileID: 5600691967284809281, guid: 30d7a138e5ebeb2488808ecd238dc93f,
     type: 3}

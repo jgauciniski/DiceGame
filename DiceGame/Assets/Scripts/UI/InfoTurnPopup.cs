@@ -14,6 +14,8 @@ public class InfoTurnPopup : Popup
     // Start is called before the first frame update
     void Start()
     {
+        turnGroup.SetActive(false);
+        rerollGroup.SetActive(false);
         playerName.text = gameManager.GetPlayer(gameManager.IsPlayerTurn).Name;
         playerNameReroll.text = playerName.text;
         playerRerollCount.text = gameManager.GetPlayer(gameManager.IsPlayerTurn).Rerolls.ToString();

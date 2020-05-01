@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1901723516529131404}
   - component: {fileID: 1901723516529131406}
   m_Layer: 0
-  m_Name: Music Manager
+  m_Name: MusicManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091599896bd9b964585bcfbf06580fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelMusicChangeArray: []
+  levelMusicChangeArray:
+  - {fileID: 0}
+  - {fileID: 8300000, guid: df1891ce6d848c340877367d4ab982b0, type: 3}
+  - {fileID: 8300000, guid: df1891ce6d848c340877367d4ab982b0, type: 3}
+  - {fileID: 8300000, guid: df1891ce6d848c340877367d4ab982b0, type: 3}
+  - {fileID: 8300000, guid: df1891ce6d848c340877367d4ab982b0, type: 3}
+  - {fileID: 8300000, guid: df1891ce6d848c340877367d4ab982b0, type: 3}
 --- !u!82 &1901723516529131406
 AudioSource:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ public class Dice : MonoBehaviour
 {
     [HideInInspector] public GameManager gameManager;
     [SerializeField] Vector3 rotation = new Vector3(100, 100, 100);
+    [SerializeField] AudioSource audioSource;
 
     Rigidbody rb;
     Vector3 startRot;
@@ -46,12 +47,14 @@ public class Dice : MonoBehaviour
             inGame = true;
             rb.useGravity = true;
             rb.isKinematic = false;
-            rb.AddTorque(Random.Range(0, -500), Random.Range(0, -500), Random.Range(0, -500));
+            rb.AddTorque(Random.Range(-500, -1000), Random.Range(-500, -1000), Random.Range(-500, -1000));
+           
         }
     }
 
     public void ResetDice()
     {
+        audioSource.enabled = false;
         isReady = true;
         inGame = false;
         rb.useGravity = false;
@@ -60,5 +63,15 @@ public class Dice : MonoBehaviour
         //randomize dice rotation
         startRot = new Vector3(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360));
         transform.rotation = Quaternion.Euler(startRot);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        audioSource.enabled = true;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+       // audioSource.enabled = false;
     }
 }

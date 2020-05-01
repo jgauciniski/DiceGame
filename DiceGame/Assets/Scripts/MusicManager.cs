@@ -18,7 +18,7 @@ public class MusicManager : MonoBehaviour {
         if (_instance != null)
         {
             Destroy(gameObject);
-            Debug.Log("Duplicate music player self-destructiong!");
+            //Debug.Log("Duplicate music player self-destructiong!");
         }
         else
         {
@@ -45,20 +45,24 @@ public class MusicManager : MonoBehaviour {
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         AudioClip thisLevelMusic = levelMusicChangeArray[scene.buildIndex];
-        print("MUSIC " + scene.buildIndex);
+        //print("MUSIC " + scene.buildIndex);
 
         if (thisLevelMusic) //If theres's some music attached
         {
             audio.clip = thisLevelMusic;
-            audio.loop = true;
-            audio.Play();
+
+            if (audio.clip.name == thisLevelMusic.name && !audio.isPlaying)
+            {
+                audio.clip = thisLevelMusic;
+                audio.loop = true;
+                audio.Play();
+            }
         }
-        
     }
 
     public void ChangeVolume(float volume)
     {
         audio.volume = volume;
-        print("VOL " + audio.volume);
+       // print("VOL " + audio.volume);
     }
 }

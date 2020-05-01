@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] protected int rerolls = 3;
     [SerializeField] protected List<int> diceResult;
     [SerializeField] protected Material diceMaterial;
+    [SerializeField] protected float delayBeforeNextRoll = 1f;
 
     public bool IsReady { get; set; }
     public bool CanReroll { get; set; }
@@ -52,4 +53,12 @@ public class Player : MonoBehaviour
     {
         return false;
     }
+
+    public float DelayBeforeNextRoll
+    {
+        get { return delayBeforeNextRoll; }
+        set { delayBeforeNextRoll = value; }
+    }
+
+
 }

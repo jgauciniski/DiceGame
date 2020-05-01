@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject rollButton;
     [SerializeField] Button exitButton;
     [SerializeField] UIManager UIManager;
+    [SerializeField] Animator animScore;
     [SerializeField][Tooltip("Waiting time before reset in case of invalid play")] float invalidPlayTimer = 5f;
     [SerializeField] int numberOfRounds = 11;
     [SerializeField] Dice[] dice; //0 - white, 1 - red
@@ -27,7 +28,7 @@ public class GameManager : MonoBehaviour
 
     int round;
     float invalidTimer = 0;
-    bool isTieEven;
+    bool isTie, isTieEven;
     bool isGameOver = false;
 
     public bool IsPlayerTurn { get; set; }
@@ -39,7 +40,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (round > numberOfRounds && !isGameOver)
+        if ((round > numberOfRounds || player[0].GameScore > numberOfRounds/2 || 
+            player[1].GameScore > numberOfRounds / 2) && !isGameOver)
         {
             GameOver();
             isGameOver = true;
@@ -47,7 +49,7 @@ public class GameManager : MonoBehaviour
 
         CheckForInvalidPlay();
     }
-
+    
     public void StartGame()
     {
         ResetGame();
@@ -72,7 +74,7 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = false;
         round = 1;
-        nextRollManual = false;
+        EnableNextRollManual(false);
         EnableRollButton(false);
         ResetPlayers();
         SetRollTurn(true); //set turn to the player
@@ -137,7 +139,12 @@ public class GameManager : MonoBehaviour
         ResetDice();
 
         if (index == 0) { EnableRollButton(true); }
-        else { RollTheDices(); }
+        else
+        {
+            //Random delay before bot roll
+            var delay = UnityEngine.Random.Range(0, player[1].DelayBeforeNextRoll);
+            StartCoroutine(RollTheDicesDelay(delay));
+        }
     }
 
     void SetRollTurn(bool isPlayer)
@@ -181,7 +188,9 @@ public class GameManager : MonoBehaviour
         if (nextRollManual)
         {
             ApplyManualScore();
-            //todo instantiate confirmation
+
+            //Manual Score Warning
+            UIManager.ShowWarningConfirmation(this);
         }
 
         //check for doubles 
@@ -195,26 +204,57 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            //if player rolled double-odds, cant reroll
-            if (player[0].DiceResult[0] % 2 != 0) { player[0].CanReroll = false; }
+           /* //if player rolled double-odds, cant reroll
+            foreach (var result in player[0].DiceResult)
+            {
+                if (result % 2 == 0)
+                {
+                    player[0].CanReroll = true;
+                    break;
+                }
+                else { player[0].CanReroll = false; }
+            }
+
             //if bot rolled double-evens, cant reroll
-            else { player[1].CanReroll = false; }
+            foreach (var result in player[1].DiceResult)
+            {
+                if (result % 2 != 0)
+                {
+                    player[1].CanReroll = true;
+                    break;
+                }
+                else { player[1].CanReroll = false; }
+            }*/
+
+            // if (player[0].DiceResult[0] % 2 != 0 && ) { player[0].CanReroll = false; }
+            //if bot rolled double-evens, cant reroll
+            // else { player[1].CanReroll = false; }
 
             //if doubles set to zero
             player[index].RoundScore = 0;
         }
 
-        if (IsPlayerTurn && !IsReroll) { NextPlayer(); }
+        //Debug.Log("Round score for " + player[index].Name + " " + player[index].RoundScore);
+
+        if (!nextRollManual) { NextRoll(); }
+    }
+
+    //Also called by UI Warning Popup
+    public void NextRoll()
+    {
+        if (IsPlayerTurn && !IsReroll)
+        {
+            //Delay before next player
+            StartCoroutine(NextPlayerDelay(player[0].DelayBeforeNextRoll));
+        }
         else
         {
             ProcessRoundResults();
             IsReroll = false;
-           
-            //Reroll popup
+
+            //End Round popup
             UIManager.InstantiatePopup(UIManager.endRoundPopup, this);
         }
-
-        Debug.Log("Round score for " + player[index].Name + " " + player[index].RoundScore);
     }
 
     void CheckIfCanReroll()
@@ -224,28 +264,49 @@ public class GameManager : MonoBehaviour
             if (p.Rerolls > 0) { p.CanReroll = true; }
             else { p.CanReroll = false; }
         }
+
+        //if player rolled double-odds, cant reroll
+        foreach (var result in player[0].DiceResult)
+        {
+            if (result % 2 == 0)
+            {
+                player[0].CanReroll = true;
+                break;
+            }
+            else { player[0].CanReroll = false; }
+        }
+
+        //if bot rolled double-evens, cant reroll
+        foreach (var result in player[1].DiceResult)
+        {
+            if (result % 2 != 0)
+            {
+                player[1].CanReroll = true;
+                break;
+            }
+            else { player[1].CanReroll = false; }
+        }
     }
 
     void ProcessRoundResults()
     {
         if (player[0].RoundScore == player[1].RoundScore)
         {
-            Debug.Log("It's a tie!");
-
+            //Debug.Log("It's a tie!");
+            isTie = true;
             //Even result goes to the player
             if (player[0].RoundScore % 2 == 0)
             {
-                Debug.Log("Its even!");
-                //player[1].RoundScore = 0;
+                //Debug.Log("Its even!");
                 isTieEven = true;
             }
             else //Odd result goes to the bot
             {
-                Debug.Log("Its odd!");
-                //player[0].RoundScore = 0;
+                //Debug.Log("Its odd!");
                 isTieEven = false;
             }
         }
+        else { isTie = false; }
     }
 
     void NextPlayer()
@@ -256,16 +317,33 @@ public class GameManager : MonoBehaviour
         if (!IsReroll) { SetRollTurn(!IsPlayerTurn); }
         else { SetRollTurn(IsPlayerTurn); }
 
-        if (IsPlayerTurn) { EnableRollButton(true); }
+        if (IsPlayerTurn)
+        {
+            //reset player
+            ResetRoll(0);
+            EnableRollButton(true);
+        }
         else
         {
+            //reset bot
+            ResetRoll(1);
             EnableRollButton(false);
-            //todo: add delay;
-            RollTheDices();
         }
 
-        //Turn Info Popup
-        UIManager.InstantiatePopup(UIManager.infoTurnPopup, this);
+            //Turn Info Popup
+            UIManager.InstantiatePopup(UIManager.infoTurnPopup, this);
+    }
+
+    IEnumerator RollTheDicesDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        RollTheDices();
+    }
+
+    IEnumerator NextPlayerDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        NextPlayer();
     }
 
     bool IsReadyForNextRound()
@@ -282,8 +360,10 @@ public class GameManager : MonoBehaviour
         if (isGameOver) { return; }
 
         CheckIfCanReroll();
-        CheckForBotReroll();
 
+        //Bot do not reroll if it's manual
+        if(!nextRollManual) { CheckForBotReroll(); }
+        
         if (IsReadyForNextRound())
         {
             round++;
@@ -292,12 +372,20 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            NextPlayer();
+            //Next player
+            StartCoroutine(NextPlayerDelay(player[0].DelayBeforeNextRoll));
         }
     }
 
     void CheckForBotReroll()
     {
+        //if it's tie and odd roll, player doesn't need to reroll
+        if (isTie && !isTieEven)
+        {
+            player[1].IsReady = true;
+            return;
+        }
+
         //Check if Bot wants to reroll
         if (player[1].CanReroll)
         {
@@ -310,7 +398,7 @@ public class GameManager : MonoBehaviour
                 SetPlayersNotReady();
                 //todo show ui
 
-                Debug.Log("BOT WANTS TO REROLL!");
+                //Debug.Log("BOT WANTS TO REROLL!");
                 IsPlayerTurn = false;
                 GetPlayer(false).RoundScore = 0;
             }
@@ -324,15 +412,34 @@ public class GameManager : MonoBehaviour
         foreach (Player p in player) { p.IsReady = false; }
     }
 
+    //Add score and trigger the score anim
     void AddScore()
     {
         if (player[0].RoundScore > player[1].RoundScore)
         {
             player[0].GameScore += 1;
+            animScore.SetBool("IsPlayer", true);
         }
-        else if (isTieEven) { player[0].GameScore += 1; }
-        else if (!isTieEven) { player[1].GameScore += 1; }
-        else { player[1].GameScore += 1; }
+        else if(isTie)
+        {
+            if (isTieEven)
+            {
+                player[0].GameScore += 1;
+                animScore.SetBool("IsPlayer", true);
+            }
+            else
+            {
+                player[1].GameScore += 1;
+                animScore.SetBool("IsPlayer", false);
+            }
+        }
+        else
+        {
+            player[1].GameScore += 1;
+            animScore.SetBool("IsPlayer", false);
+        }
+
+        animScore.SetTrigger("NextRound");
     }
 
     void ResetRound()
@@ -394,18 +501,36 @@ public class GameManager : MonoBehaviour
     {
         if (IsPlayerTurn)
         {
-            for (int i=0; i < player[0].DiceResult.Count; i++)
+            player[0].DiceResult.Clear();
+            for (int i=0; i < diceResultManual.Count; i++)
             {
-                player[0].DiceResult[i] = diceResultManual[i];
+                player[0].DiceResult.Add(diceResultManual[i]);
             }
         }
         else
         {
-            for (int i = 0; i < player[1].DiceResult.Count; i++)
+            player[1].DiceResult.Clear();
+            for (int i = 0; i < diceResultManual.Count; i++)
             {
-                player[1].DiceResult[i] = diceResultManual[i];
+                player[1].DiceResult.Add(diceResultManual[i]);
             }
         }
     }
+
+    public void EnableNextRollManual(bool isEnabled)
+    {
+        nextRollManual = isEnabled;
+    }
+
+    public List<int> GetManualDice()
+    {
+        return diceResultManual;
+    }
+
+    public bool IsTie()
+    {
+        return isTie;
+    }
+
 }
 
