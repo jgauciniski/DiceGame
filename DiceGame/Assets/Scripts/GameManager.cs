@@ -445,7 +445,7 @@ public class GameManager : MonoBehaviour
     void GameOver()
     {
         EnableRollButton(false);
-        round = numberOfRounds;
+        if (round >= numberOfRounds) { round = numberOfRounds; }
         //update UI
         UIManager.SetUI(player[0].GameScore, player[1].GameScore, round);
         ResetDice();
