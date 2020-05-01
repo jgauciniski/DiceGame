@@ -13,7 +13,6 @@ public class MusicManager : MonoBehaviour {
 
     void Awake()
     {
-
         audio = GetComponent<AudioSource>();
         if (_instance != null)
         {
@@ -27,11 +26,6 @@ public class MusicManager : MonoBehaviour {
         }
     }
 
-    // Use this for initialization
-    void Start () {
-        
-    }
-	
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;

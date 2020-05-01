@@ -32,6 +32,5 @@ public class SideNumber : MonoBehaviour
         {
             resultSent = false;
         }
-        
     }
 }

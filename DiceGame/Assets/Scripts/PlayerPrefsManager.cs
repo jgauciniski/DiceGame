@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class PlayerPrefsManager : MonoBehaviour
 {
-
     const string MASTER_VOLUME_KEY = "master_volume";
-
     const string TOTAL_MATCHES_KEY = "total_matches";
     const string TOTAL_PLAYER_WINS_KEY = "total_player_wins";
     const string TOTAL_BOT_WINS_KEY = "total_bot_wins";

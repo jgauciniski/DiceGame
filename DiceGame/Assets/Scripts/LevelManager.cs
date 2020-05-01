@@ -37,6 +37,4 @@ public class LevelManager : MonoBehaviour {
         int indexScene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(indexScene+1);
     }
-
-  
 }

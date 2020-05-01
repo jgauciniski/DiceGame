@@ -2752,7 +2752,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1052542785}
-        m_MethodName: RollTheDices
+        m_MethodName: RollTheDice
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -38,5 +38,4 @@ public class OptionsController : MonoBehaviour {
         PlayerPrefsManager.SetPlayerWins(true, 0);
         PlayerPrefsManager.SetPlayerWins(false, 0);
     }
-
 }

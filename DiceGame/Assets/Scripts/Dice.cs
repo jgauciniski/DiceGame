@@ -38,7 +38,6 @@ public class Dice : MonoBehaviour
         }
     }
 
-
     public void RollDice()
     {
         if (isReady && !inGame)
@@ -48,7 +47,6 @@ public class Dice : MonoBehaviour
             rb.useGravity = true;
             rb.isKinematic = false;
             rb.AddTorque(Random.Range(-500, -1000), Random.Range(-500, -1000), Random.Range(-500, -1000));
-           
         }
     }
 
@@ -68,10 +66,5 @@ public class Dice : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         audioSource.enabled = true;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-       // audioSource.enabled = false;
     }
 }

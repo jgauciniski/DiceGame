@@ -16,9 +16,4 @@ public class FirstPopup : Popup
         gameManager.EnableRollButton(true);
         anim.SetTrigger("Close");
     }
-
-    public void ButtonRules()
-    {
-        //todo
-    }
 }

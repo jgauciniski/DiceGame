@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] protected float delayBeforeNextRoll = 1f;
 
     public bool IsReady { get; set; }
+    public bool IsDouble { get; set; }
     public bool CanReroll { get; set; }
     public int RoundScore { get; set; }
     public int GameScore { get; set; }
@@ -59,6 +60,4 @@ public class Player : MonoBehaviour
         get { return delayBeforeNextRoll; }
         set { delayBeforeNextRoll = value; }
     }
-
-
 }

@@ -26,29 +26,31 @@ public class EndRoundPopup : Popup
         //reset doubles label
         doublesAreZero[0].SetActive(false);
         doublesAreZero[1].SetActive(false);
+        //reset double-odds label
+        doubleOdds.SetActive(false);
 
         //doubles
         if (gameManager.GetPlayer(true).RoundScore == 0)
         {
             doublesAreZero[0].SetActive(true);
+
+            //if it's double-odds, enable double-odds label
+            if (gameManager.GetPlayer(true).IsDouble && gameManager.GetPlayer(true).DiceResult[0] % 2 != 0)
+            {
+                doubleOdds.SetActive(true);
+            }
         }
-        if(gameManager.GetPlayer(false).RoundScore == 0)
+
+        if (gameManager.GetPlayer(false).RoundScore == 0)
         {
             doublesAreZero[1].SetActive(true);
         }
 
-        //rest double-odds
-        doubleOdds.SetActive(false);
-
-        //if it's double-odds, player can't reroll
-        if (gameManager.GetPlayer(true).DiceResult[0] % 2 != 0)
+        if (!gameManager.GetPlayer(true).CanReroll)
         {
-            doubleOdds.SetActive(true);
-            gameManager.GetPlayer(true).CanReroll = false;
             rerollButton.interactable = false;
         }
-
-        if (!gameManager.GetPlayer(true).CanReroll) { rerollButton.interactable = false; }
+        else { rerollButton.interactable = true; }
 
         //reset tie label
         tieLabel.SetActive(false);
@@ -68,7 +70,6 @@ public class EndRoundPopup : Popup
         gameManager.NextRound();
         anim.SetTrigger("Close");
     }
-        
 
     public void PlayerReroll()
     {
