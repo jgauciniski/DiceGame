@@ -26,7 +26,8 @@ public class GameOverPopup : Popup
         botWins.SetActive(!winner);
 
         //Save the winner in player prefs
-        PlayerPrefsManager.SetPlayerWins(winner, 1);
+        var totalVictories = PlayerPrefsManager.GetPlayerWins(winner);
+        PlayerPrefsManager.SetPlayerWins(winner, totalVictories + 1);
 
         //Save the total games finished
         var totalMatches = PlayerPrefsManager.GetTotalMatches();

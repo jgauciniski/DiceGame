@@ -11,6 +11,7 @@ public class EndRoundPopup : Popup
     [SerializeField] TextMeshProUGUI rerollCounter;
     [SerializeField] GameObject[] doublesAreZero;
     [SerializeField] GameObject tieLabel;
+    [SerializeField] TextMeshProUGUI tieTextLabel;
     [SerializeField] GameObject doubleOdds;
     [SerializeField] Button rerollButton;
     [SerializeField] Button buttonOK;
@@ -58,6 +59,12 @@ public class EndRoundPopup : Popup
         //Tie
         if (gameManager.IsTie())
         {
+            if (gameManager.GetPlayer(true).RoundScore % 2 == 0)
+            {
+                tieTextLabel.text = "Even roll (Player Wins)";
+            }
+            else { tieTextLabel.text = "Odd roll (DiceBot Wins)"; }
+           
             tieLabel.SetActive(true);
         }
     }
