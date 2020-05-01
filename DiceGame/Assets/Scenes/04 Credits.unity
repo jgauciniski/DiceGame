@@ -384,7 +384,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 3352.8}
+  m_SizeDelta: {x: 0, y: 3290.4}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &985392681
 PrefabInstance:
@@ -1073,8 +1073,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281610796
-  m_fontColor: {r: 0.17328233, g: 0.19898097, b: 0.20754719, a: 1}
+    rgba: 4281348144
+  m_fontColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1246,7 +1246,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1449415839}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.12502982
+  m_Size: 0.12740093
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1356,6 +1356,11 @@ MonoBehaviour:
     https://www.wallpaperflare.com/brown-surface-wood-texture-pattern-material-timber-hardwood-wallpaper-wjxij
 
 
+    Floor Texture
+
+    https://www.publicdomainpictures.net/en/view-image.php?image=221580&picture=wood-texture
+
+
     Tree/Island:
 
     https://pixabay.com/pt/vectors/coqueiro-palmeira-duna-%C3%A1rvore-ilha-1892861/
@@ -1364,6 +1369,11 @@ MonoBehaviour:
     Sea Background:
 
     https://www.publicdomainpictures.net/en/view-image.php?image=76205&picture=seascape-backdrop
+
+
+    Sky Night Background
+
+    https://www.needpix.com/photo/download/1062198/sky-night-dark-stars-free-pictures-free-photos-free-images-royalty-free-free-illustrations
 
 
     Porthole/Lens:
@@ -1389,6 +1399,11 @@ MonoBehaviour:
     Button Background:
 
     https://pixabay.com/pt/vectors/branco-brilhante-bot%C3%A3o-retangular-37292/
+
+
+    Frame Popup
+
+    https://www.needpix.com/photo/download/232705/frame-border-white-metal-template-blank-square-design-framed
 
 
     FONTS:
@@ -1437,8 +1452,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3024899148
-  m_fontColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 0.7058824}
+    rgba: 4283913290
+  m_fontColor: {r: 0.2901961, g: 0.32941177, b: 0.34117648, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1456,8 +1471,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 36.3
-  m_fontSizeBase: 36.3
+  m_fontSize: 32.2
+  m_fontSizeBase: 32.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1473,7 +1488,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 1508
+  m_firstOverflowCharacterIndex: 1892
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -1497,12 +1512,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 2072747795}
-    characterCount: 1512
+    characterCount: 1896
     spriteCount: 0
-    spaceCount: 86
-    wordCount: 174
+    spaceCount: 99
+    wordCount: 208
     linkCount: 0
-    lineCount: 83
+    lineCount: 91
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -1716,8 +1731,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281610796
-  m_fontColor: {r: 0.17328233, g: 0.19898097, b: 0.20754719, a: 1}
+    rgba: 4281348144
+  m_fontColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

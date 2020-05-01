@@ -503,10 +503,5 @@ public class GameManager : MonoBehaviour
     {
         return isTie;
     }
-
-    public bool IsDouble()
-    {
-        return isDouble;
-    }
 }
 
