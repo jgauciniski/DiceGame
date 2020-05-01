@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1197798549630989576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1197798549630989582}
+  - component: {fileID: 1197798549630989583}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1197798549630989582
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197798549630989576}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1197798549630989583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197798549630989576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b90848108aa312b4bad8b81ce89584a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popupParent: {fileID: 0}
+  topPopupParent: {fileID: 0}
+  playerScoreUI: {fileID: 0}
+  botScoreUI: {fileID: 0}
+  roundUI: {fileID: 0}
+  firstPopup: {fileID: 5600691967284809281, guid: 4ba2ccd4d4981bc4c92fe5122b60f066,
+    type: 3}
+  infoTurnPopup: {fileID: 7697731928407313058, guid: 5ffae72492e34f7479bf070ad06b95da,
+    type: 3}
+  endRoundPopup: {fileID: 5600691967284809281, guid: 2eaa7522c0f1e4740baecf7d809834f0,
+    type: 3}
+  invalidPopup: {fileID: 7697731928407313058, guid: 836a033b6e1713b47a946a796f342827,
+    type: 3}
+  gameOverPopup: {fileID: 7697731928407313058, guid: b7d5885b30a7d1744b34d81bf5d16e2b,
+    type: 3}
+  exitGameplayPopup: {fileID: 7697731928407313058, guid: aaca4c3f04b9a8040a6b856f97cc7e19,
+    type: 3}
+  manualScorePopup: {fileID: 5600691967284809281, guid: 30d7a138e5ebeb2488808ecd238dc93f,
+    type: 3}
