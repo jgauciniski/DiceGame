@@ -4,7 +4,7 @@ Pair o'Dice is a simple 3D Dice Game made in Unity/C#.
 
 (c) 2020 - Juliano Gauciniski.
 
-Any issues and/or sugestions, please conctacte me: juliano.gauciniski@gmail.com
+Any issues and/or sugestions, please contacte me: juliano.gauciniski@gmail.com
 
 ## Getting Started
 
